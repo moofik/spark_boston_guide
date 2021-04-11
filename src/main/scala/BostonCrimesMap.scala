@@ -67,8 +67,11 @@ object BostonCrimesMap extends App {
     .orderBy($"crimes_total".desc)
     .join(frequentCrimesDF, Seq("DISTRICT"))
     .distinct()
+    .coalesce(1)
     .write
-    .parquet(outputFile)
+    .format("parquet")
+    .mode("append")
+    .save(outputFile)
 
   spark
     .read
